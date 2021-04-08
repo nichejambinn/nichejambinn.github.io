@@ -14,8 +14,14 @@ tags:
 
 What could possibly go wrong?
 
-In case you want to try and solve the challenge for yourself first, you can find the original challenge files as well as my solutions on [GitHub](https://github.com/nichejambinn/geralts-other-decoder-ring).
+{% capture notice-2 %}
+#### *Geralt's Decoder Ring*
 
+* 100pts max difficulty programming challenge from the 2021 ISSessions CTF hosted and run by the ISSessions infosec club at Sheridan. Nobody, myself included, was able to solve this challenge during the CTF but a couple weeks later I came back to it and figured the problem out so I'm sharing my process
+* if you want to try and solve the challenge for yourself, you can find the original challenge files as well as my solutions on [GitHub](https://github.com/nichejambinn/geralts-other-decoder-ring)
+{% endcapture %}
+
+<div class="notice">{{ notice-2 | markdownify }}</div>
 <!--more-->
 
 Let's see what this thing does. Typing in "gimme the flag!" (because why not?) and clicking *Encode* we get something that looks a little bit like 

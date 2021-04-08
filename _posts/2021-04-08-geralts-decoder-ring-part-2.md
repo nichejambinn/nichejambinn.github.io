@@ -11,7 +11,7 @@ tags:
 ---
 
 **Note:** This is the second part of the write-up on how to solve the challenge *Geralt's Decoder Ring* from the ISSessions 2021 CTF. It assumes you read the [first part](/blog/geralts-decoder-ring-part-1) or got as far as I or anyone else I spoke to who tried this challenge did before the end of the CTF and rebuilt built the decoder function before getting totally stumped when trying to decode the flag.
-{: .notice--info}
+{: .notice--warning}
 
 Alright, so we've got our decoder. We can even test it in the html page: if we type in a message and encode it, decoding the ciphertext gives us the original message back. Everything works. The flag is ours.
 
