@@ -20,7 +20,9 @@ So what happens when we try and decode the `flag.txt` ciphertext?
 
 ...
 
-This isn't like `doTheShuffle()`, I understand this code forwards and backwards - I had to in order to get this far. There's no room for tricks in the code we were given for the encoder. The decoder I've built works for any other message I throw at it. I'm stumped.
+This isn't like `doTheShuffle()`, I understand this code forwards and backwards - I had to in order to get this far. There's no room for tricks in the code we were given for the encoder. The decoder I've built works for any other message I throw at it.
+
+I'm stumped.
 
 Since the beginning, I've been logging the values for `f` - the heart counts - while playing around to get the right equations for `i`, `d` and `e`. So what does the array of `f` values look like for the flag ciphertext?
 
@@ -67,11 +69,13 @@ When we compare the two outputs above, there are some patterns that emerge. Sure
 
 <!--more-->
 
-Let me say something here. I put hours into rebuilding that decoder. I love it. At this point in the challenge, as far as I'm concerned, there's no way it could ever do anything wrong. The ciphertext, however, is literally Chinese to me. It's stupid. This challenge was clearly designed by a hideous Nilfgaardian troll.
+Let me say something here. I put hours into rebuilding that decoder. I love it. At this point in the challenge, as far as I'm concerned, there's no way it could ever do anything wrong.
 
-Sadly, the ciphertext doesn't care about my feelings. Someone *did* design this challenge, and unless they really screwed things up, this is exactly what should be playing out right now. So even if I know my decoder isn't broken, it's not working to decode this flag.
+The ciphertext, however, is literally Chinese to me. It's stupid. This challenge was clearly designed by a hideous Nilfgaardian troll.
 
-Wait a minute... what if this ciphertext was written using *another* encoder?
+Sadly, the ciphertext doesn't care about my feelings. Someone *did* design this challenge, and unless they really screwed things up, this is exactly what should be playing out right now. So even if I know my decoder isn't broken, I also know that it's not working to decode this flag.
+
+Wait a minute... what if this ciphertext was created using *another* encoder?
 
 Suppose `f=1481` the value for the first digit in the array. Now let's assume we got all the values we would otherwise expect: `e=7`, `d=0`, `i=0`. What would have to change about my formula for `f` for the numbers I'm seeing to make sense?
 
@@ -82,7 +86,7 @@ i = Math.floor(f[j] / 137) - 1; // index of the char in the msg
 d = Math.floor(f[j] % 137 / 13) - 1; // index of the digit in the char code
 ```
 
-We've been thinking about `i` and `d` in terms of their interpretation by the old encoder, like I've added in the comments above. But what `i` actually represents is one less than the number of times `f` can be divided by `137`. And `d` is one less than the number of times that the remainder of `f` after that division can be divided by `13`.
+We've been thinking about `i` and `d` in terms of their interpretation by the old encoder, what I've indicated in the comments above. But what `i` actually represents is one less than the number of times `f` can be divided by `137`. And `d` is one less than the number of times that the remainder of `f` after that division can be divided by `13`.
 
 Assuming our current formula for decoding the digit `e` is totally flawed, then perhaps what we're really seeing is more along the lines of
 
@@ -126,7 +130,7 @@ code: 70, 76, 65, 71, 123, ..., 125
 21808 = 5 +   -391     +  137*162, i=15, d=1
 ```
 
-Wow, okay, that's something. Even more because we soon discover that `104 ≡ 71 ≡ 38 ≡ 5 ≡ -28 ≡ 5 % 33` where we subtract one factor of `33` at every `i`-step.
+Wow, okay, that's definitely something. Even moreso because we quickly discover that `104 ≡ 71 ≡ 38 ≡ 5 ≡ -28 ≡ 5 % 33` where we're subtracting one factor of `33` at every `i`-step.
 
 Here's what I got as a formula for `f`
 
@@ -134,30 +138,31 @@ Here's what I got as a formula for `f`
 f = e + 5+33*(3-i) + 137*(10*(i+1)+d)
 ```
 
-Notice when `i=1`, `(71+7)/13 = 78/13 = 6`, which is why we were getting `e=0` according to the old way of decoding the ciphertext.
+Notice that, when `i=1`, `(71+7)/13 = 78/13 = 6`, which is why we were getting `e=0` according to the old way of decoding the ciphertext.
 
-Looks like the kind of bizarre formula someone would cook up for the explicit purpose of creating just this sort of bewildering result when you try and plug the `flag.txt` heart count numbers into the decoder equations you've built based on the provided function for the encoder :P
+This looks like exactly the kind of bizarre formula someone would cook up for the explicit purpose of creating just this sort of bewildering result when someone tries to plug the `flag.txt` heart count numbers into the decoder equations they've built based on the function for the encoder that was provided in the challenge :P
 
-Now that we have this everything else is just getting the equations for the variables right in our new decoder
+Now that we have this formula everything else is just getting the equations for the other variables right in a new decoder
 
 ```js
+// replace previous assignments for i, d, and e with these ones
 i = Math.round(f[j] / 137 / 10) - 1;
 d = Math.floor((f[j]+33*(i-3)) / 137) - 10*(i + 1);
 
 e = (f[j] - (5 + 33*(3-i))) % 137;
 ```
 
-With these in place, running the decoder against the contents of `flag.txt` gives us the flag.
+With all that in place, running the decoder against the contents of `flag.txt` gives us the flag.
 
 ![geralt challenge flag](/assets/images/geralt-page-flag.png "geralt-page-flag")
 
-This was a *very* frustrating challenge involving some Sherlock Holmes-level inferences about the existence of a second magical encoder. It went unsolved during the ISSessions 2021 CTF and no one I spoke to after the event got any further than I did - wondering what the hell to do with the results of running the flag ciphertext through the first rebuilt decoder.
+This was a *very* frustrating challenge involving some Sherlock Holmes-level inferences about the existence of a second magical encoder. It went unsolved during the ISSessions 2021 CTF and no one I spoke to after the event got any further than I did - wondering what the hell to do with the results we got from running the flag ciphertext through the first rebuilt decoder.
 
-If anything, I hope that by having solved the mystery of Geralt's *other* decoder ring, I've spared anyone else from having to deal with this challenge in a future ISSessions CTF.
+If anything, I hope that by having solved the mystery of Geralt's *other* decoder ring, I'll spare anyone else from ever having to deal with this challenge in a future ISSessions CTF :X
 
-To that end, I'd like to thank the entire ISSessions 2021 CTF event team for their hard work, ingenuity, and sheer diabolical wickedness in designing this year's challenges. As a first-timer, I couldn't have asked for a better CTF :)
+To that end, I'd like to thank the entire ISSessions 2021 CTF event team for their hard work, ingenuity, and sheer diabolical wickedness in designing this year's challenges. As a first-timer, I couldn't have asked for a better CTF :D
 
-And thank you for reading!
+And thank *you* for reading!
 
 
 
