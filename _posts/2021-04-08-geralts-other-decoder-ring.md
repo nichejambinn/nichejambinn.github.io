@@ -172,7 +172,7 @@ And thank *you* for reading!
 
 What could possibly go wrong?
 
-
+In case you want to try and solve the challenge for yourself first, you can find them on [GitHub](https://github.com/nichejambinn/geralts-other-decoder-ring).
 
 <!--more-->
 
@@ -259,8 +259,8 @@ Time to start working our back to undo this damage and rebuild the controller. F
 
 ```js
 function applyMagicalDecoder(input) {
-    HEART = 9828 // ♥ 9829 \u2665
-    CLUB = 9827 // ♣ 9827 \u2663
+    const HEART = 9828 // ♥ 9829 \u2665
+    const CLUB = 9827 // ♣ 9827 \u2663
 
     let a = [];
     let count = 0;
@@ -274,16 +274,27 @@ function applyMagicalDecoder(input) {
             count++;
         }
     }
-...
+  ...
 ```
 
+I'm still ignoring that shuffle problem, so what's next is to somehow get the digit `e` from the heart count value `f`. Recall the formula for `f` in the decoder is
 
 ```js
+f = e + 13*(d+1) + 137*(i+1);
+```
 
-    // unshuffle
-    a.sort(function(n, m) { return n - m; }); // formula for f orders them
-      
+Hey now... `e` is a digit right? That means it's somewhere between 0 and 9 inclusive. But at each step of the loop, we're adding at least one group of `13` and `137` to the next digit in order to encode that value of `f`. *Any* `a[n] > a[n-1]` by at least `141`!
 
+They're naturally ordered! Who *cares* if `a` is shuffled, all we have to do is sort the array from lowest to highest and we've recovered the original order of char code digits!
+
+We'll add that to our decoder
+
+```js
+    // unshuffle - char code digits are ordered from lowest to highest value of f
+    a.sort(function(n, m) { return n - m; });
+``` 
+
+```js
     // decode from the formula for f
     let char_codes = []; // b
     let char_digits = []; // c
