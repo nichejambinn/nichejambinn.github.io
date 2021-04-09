@@ -10,7 +10,7 @@ tags:
   - programming
 ---
 
-**Note:** This is the second part of the write-up on how to solve the challenge *Geralt's Decoder Ring* from the ISSessions 2021 CTF. It assumes you read the [first part](/blog/geralts-decoder-ring-part-1) or got as far as I or anyone else I spoke to who tried this challenge did before the end of the CTF and rebuilt built the decoder function before getting totally stumped when trying to decode the flag.
+**Note:** This is the second part of the write-up on how to solve the challenge *Geralt of Rivia's Magical Decoder* from the ISSessions 2021 CTF. It assumes you read the [first part](/blog/geralts-decoder-ring-part-1) or got as far as I or anyone else I spoke to who tried this challenge did before the end of the CTF and rebuilt the decoder function before getting totally stumped when trying to decode the flag.
 {: .notice--warning}
 
 Alright, so we've got our decoder. We can even test it in the html page: if we type in a message and encode it, decoding the ciphertext gives us the original message back. Everything works. The flag is ours.
@@ -64,7 +64,7 @@ f=568 has digit 7 (e) at index 0 (d) of char 3 (i)
 f=575 has digit 1 (e) at index 1 (d) of char 3 (i) 'G'=71
 ```
 
-This is what we *should* be getting, but it's not what we're seeing. Well... there's a hint in what I just said. We *know* what we should be getting, or at least we can be fairly confident about it. The contents of `flag.txt` should decode to match the flag pattern `FLAG\{[a-z0-9]{10}\}`.
+This is what we *should* be getting, but it's not what we're seeing. Well... there's a hint in what I just said. We *know* what we should be getting, or at least we can be fairly confident about it. The contents of `flag.txt` should decode to match the flag pattern `FLAG\{[a-z0-9]{10}\}`
 
 When we compare the two outputs above, there are some patterns that emerge. Sure `i` is changing, but more than that it's *incrementing*, the same way `d` normally would. Whereas `d` is more or less constant, much like `i` used to be. And isn't that a `7` and a `0` at the start of the ciphertext? Aren't those the same as the digits in the code for `F`?
 
@@ -72,7 +72,7 @@ When we compare the two outputs above, there are some patterns that emerge. Sure
 
 Let me say something here. I put hours into rebuilding that decoder. I love it. At this point in the challenge, as far as I'm concerned, there's no way it could ever do anything wrong.
 
-The ciphertext, however, is literally Chinese to me. It's stupid. This challenge was clearly designed by a hideous Nilfgaardian troll.
+The ciphertext, however, is literally Chinese to me. It's stupid. This challenge was clearly designed by a hideous Nilfgaardian troll.\*
 
 Sadly, the ciphertext doesn't care about my feelings. Someone *did* design this challenge, and unless they really screwed things up, this is exactly what should be playing out right now. So even if I know my decoder isn't broken, I also know that it's not working to decode this flag.
 
@@ -141,7 +141,7 @@ f = e + 5+33*(3-i) + 137*(10*(i+1)+d)
 
 Notice that, when `i=1`, `(71+7)/13 = 78/13 = 6`, which is why we were getting `e=0` according to the old way of decoding the ciphertext.
 
-This looks like exactly the kind of bizarre formula someone would cook up for the explicit purpose of creating just this sort of bewildering result when someone tries to plug the `flag.txt` heart count numbers into the decoder equations they've built based on the function for the encoder that was provided in the challenge :P
+Doesn't this look exactly like the kind of bizarre formula that somebody would cook up for the sake of creating just this kind of bewildering result whenever someone tried to plug the `flag.txt` heart count numbers into the decoder equations they've built based on the function for the encoder that was provided by the challenge? :P
 
 Now that we have this formula everything else is just getting the equations for the other variables right in a new decoder
 
@@ -166,3 +166,5 @@ To that end, I'd like to thank the entire ISSessions 2021 CTF event team for the
 And thank *you* for reading!
 
 [GitHub](https://github.com/nichejambinn/geralts-other-decoder-ring) repo with the original challenge files and my solutions
+
+\* I had the pleasure of getting to say hello to the creator of this challenge, Louai, who's also the ISSessions vice president, after the CTF. Turns out he's a totally good-natured albeit dangerously clever guy! Definitely not a troll.
