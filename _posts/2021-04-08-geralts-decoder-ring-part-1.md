@@ -175,4 +175,4 @@ There you go! We've rebuilt the decoder!
 
 That's as far as I got during the CTF. When I tried to decode the contents of the file containing the flag ciphertext, I hit an obstacle that stumped me for the rest of the event.
 
-It was only until I came back to challenge after a couple of weeks that I was able to solve the mystery of Geralt's *Other* Decoder Ring. But for that, you'll have to check out [Part 2](/blogs/geralts-decoder-ring-part-2)!
+It was only until I came back to challenge after a couple of weeks that I was able to solve the mystery of Geralt's *Other* Decoder Ring. But for that, you'll have to check out [Part 2](/blog/geralts-decoder-ring-part-2)!
